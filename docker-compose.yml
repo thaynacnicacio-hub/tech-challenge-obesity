@@ -1,0 +1,30 @@
+services:
+  trainer:
+    build: ./train
+    container_name: obesity_trainer
+    volumes:
+      - ./data:/app/data
+      - model_volume:/model_data
+    command: ["python", "train.py"]
+
+  api:
+    build: ./api
+    container_name: obesity_api
+    ports:
+      - "5000:5000"
+    volumes:
+      - model_volume:/model_data
+    depends_on:
+      trainer:
+        condition: service_completed_successfully
+
+  streamlit:
+    build: ./streamlit
+    container_name: obesity_streamlit
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+
+volumes:
+  model_volume:
