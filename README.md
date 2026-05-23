@@ -96,6 +96,10 @@ http://localhost:8501
 
 ## Como rodar com Docker
 
+### Opção 1: Docker tradicional (versão simples)
+
+Esta opção executa apenas a aplicação Streamlit com o modelo treinado localmente.
+
 Crie a imagem Docker:
 
 ```bash
@@ -113,6 +117,19 @@ Acesse no navegador:
 ```txt
 http://localhost:8501
 ```
+
+### Opção 2: Docker Compose (arquitetura completa)
+
+Use esta opção para rodar o fluxo completo com treinamento, API Flask e interface Streamlit separados.
+
+```bash
+docker compose up --build
+```
+
+Após a inicialização, acesse:
+
+- Streamlit: http://localhost:8501
+- API Flask: http://localhost:5000
 
 ## Estrutura do projeto
 
