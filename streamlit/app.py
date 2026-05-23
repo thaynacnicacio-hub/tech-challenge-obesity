@@ -63,9 +63,9 @@ caec_options = {
 }
 
 ch2o_options = {
-    "1L": 1,
-    "2L": 2,
-    "3L": 3
+    "1 - < 1 L/dia": 1,
+    "2 - 1-2 L/dia": 2,
+    "3 - > 2 L/dia": 3
 }
 
 faf_options = {
