@@ -43,6 +43,11 @@ fcvc_options = {
     "3 - Sempre": 3
 }
 
+smoke_options = {
+    "Não": "no",
+    "Sim": "yes"
+}
+
 ncp_options = {
     "1 - Uma refeição principal por dia": 1,
     "2 - Duas refeições principais por dia": 2,
@@ -58,22 +63,22 @@ caec_options = {
 }
 
 ch2o_options = {
-    "1 - Menos de 1 L/dia": 1,
-    "2 - Entre 1 e 2 L/dia": 2,
-    "3 - Mais de 2 L/dia": 3
+    "1L": 1,
+    "2L": 2,
+    "3L": 3
 }
 
 faf_options = {
-    "0 - Nenhuma atividade física": 0,
-    "1 - Aproximadamente 1 a 2 vezes por semana": 1,
-    "2 - Aproximadamente 3 a 4 vezes por semana": 2,
-    "3 - 5 vezes por semana ou mais": 3
+    "0 - Nenhuma": 0,
+    "1 - ~1-2×/sem": 1,
+    "2 - ~3-4×/sem": 2,
+    "3 - 5×/sem ou mais": 3
 }
 
 tue_options = {
-    "0 - Aproximadamente 0 a 2 horas por dia": 0,
-    "1 - Aproximadamente 3 a 5 horas por dia": 1,
-    "2 - Mais de 5 horas por dia": 2
+    "0 - ~0-2 h/dia": 0,
+    "1 - ~3-5 h/dia": 1,
+    "2 - > 5 h/dia": 2
 }
 
 calc_options = {
@@ -144,22 +149,22 @@ with tab1:
 
     with col3:
         caec_label = st.selectbox(
-            "Consumo de lanches/comes entre as refeições",
+            "Consumo de lanches entre as refeições",
             list(caec_options.keys())
         )
 
         smoke_label = st.selectbox(
             "Hábito de fumar",
-            ["Não fuma", "Fuma"]
+            list(smoke_options.keys())
         )
 
         ch2o_label = st.selectbox(
-            "Consumo diário de água",
+            "Consumo diário de água (litros)",
             list(ch2o_options.keys())
         )
 
         scc_label = st.selectbox(
-            "Monitora a ingestão calórica diária?",
+            "Monitora ingestão calórica",
             list(yes_no_options.keys())
         )
 
@@ -188,7 +193,7 @@ with tab1:
             list(mtrans_options.keys())
         )
 
-    smoke_value = "yes" if smoke_label == "Fuma" else "no"
+    smoke_value = smoke_options[smoke_label]
 
     input_data = {
         "Gender": gender_options[gender_label],
@@ -235,12 +240,21 @@ with tab1:
                     prob_df,
                     x="Classe",
                     y="Probabilidade",
-                    title="Probabilidade por classe",
+                    title="Distribuição de Probabilidades por Classe",
+                    labels={
+                        "Classe": "Classe de Peso",
+                        "Probabilidade": "Probabilidade (%)"
+                    },
                     text="Probabilidade"
                 )
 
                 fig.update_traces(texttemplate="%{text:.2%}", textposition="outside")
-                fig.update_layout(yaxis_tickformat=".0%")
+                fig.update_layout(
+                    yaxis_tickformat=".0%",
+                    xaxis_title="Classe de Peso",
+                    yaxis_title="Probabilidade (%)",
+                    showlegend=False
+                )
 
                 st.plotly_chart(fig, use_container_width=True)
 
