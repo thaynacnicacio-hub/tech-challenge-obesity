@@ -8,14 +8,14 @@ Este projeto foi desenvolvido para o Tech Challenge da Pós Tech em Data Analyti
 
 ## Objetivo do projeto
 
-Desenvolver uma pipeline de Machine Learning capaz de prever o nível de obesidade de uma pessoa com base em características físicas, hábitos alimentares, estilo de vida e histórico familiar.
+Construir uma solução completa de dados e Machine Learning para apoiar uma equipe médica na avaliação do nível de obesidade de pacientes.
 
-Além do modelo preditivo, o projeto também conta com uma aplicação em Streamlit contendo:
+O projeto contempla:
 
-- Sistema de predição individual;
-- Dashboard analítico com insights sobre a base de dados;
-- Visualização da probabilidade de cada classe prevista;
-- Ambiente conteinerizado com Docker.
+- Treinamento de modelo de classificação multiclasse;
+- Interface de predição em português;
+- Dashboard analítico com métricas e visualizações;
+- Fluxo de produção com Docker Compose, API Flask e Streamlit.
 
 ## Base de dados
 
@@ -137,83 +137,51 @@ O sistema não substitui avaliação médica, mas contribui para uma tomada de d
 
 ## Arquitetura com Docker Compose, Flask e Streamlit
 
-Além da versão publicada no Streamlit Cloud, o projeto também possui uma arquitetura containerizada, estruturada com três componentes principais:
+Este projeto oferece duas formas de execução:
 
-```txt
-train/      -> responsável pelo treinamento do modelo
-api/        -> API Flask responsável por expor o endpoint de predição
-streamlit/  -> interface web que consome a API Flask
-Fluxo da solução
+1. **Versão Streamlit Cloud** — utilizando `app.py` na raiz do projeto, ideal para deploy rápido e visualização online.
+2. **Versão Docker Compose** — arquitetura containerizada com treinamento, API e interface separados.
 
-O fluxo da aplicação é organizado da seguinte forma:
+### Componentes da arquitetura Docker Compose
 
-Obesity.csv
-   ↓
-Container de treinamento
-   ↓
-Modelo treinado salvo em volume Docker
-   ↓
-API Flask carrega o modelo
-   ↓
-Streamlit envia os dados para a API
-   ↓
-API retorna a classificação prevista
-Componentes da arquitetura
-1. Treinamento do modelo
+- `train/` — container de treinamento que carrega `Obesity.csv`, pré-processa os dados, treina o modelo e salva `obesity_model.pkl`.
+- `api/` — API Flask que carrega o modelo e expõe o endpoint `POST /predict`.
+- `streamlit/` — interface Streamlit que envia os dados para a API e exibe a previsão.
 
-A pasta train/ contém o script responsável por carregar a base de dados, realizar o pré-processamento, treinar o modelo de Machine Learning e salvar o arquivo obesity_model.pkl.
+### Fluxo da solução
 
-O modelo utilizado foi o RandomForestClassifier, com pipeline contendo:
+1. O container de treinamento lê a base de dados e treina o modelo.
+2. O modelo treinado é salvo em um volume Docker compartilhado.
+3. A API Flask carrega o modelo desse volume e fica disponível para requisições.
+4. A interface Streamlit envia os dados do usuário para a API e recebe a previsão.
 
-Padronização das variáveis numéricas;
-One-Hot Encoding das variáveis categóricas;
-Classificação multiclasse da variável alvo Obesity.
+### O que a API retorna
 
-O modelo alcançou acurácia de aproximadamente 92,91% na base de teste.
+- Classe prevista de obesidade;
+- Probabilidades de cada classe;
+- Resultado em JSON para uso em front-end ou outros serviços.
 
-2. API Flask
+### Benefícios dessa arquitetura
 
-A pasta api/ contém uma API desenvolvida com Flask.
+- Separação clara entre treinamento, inferência e interface;
+- Melhor aproximação a um fluxo de produção;
+- Reutilização do modelo por diferentes consumidores;
+- Facilita testes e deploy em ambientes conteinerizados.
 
-A API possui o endpoint:
+### Como executar com Docker Compose
 
-POST /predict
-
-Esse endpoint recebe os dados do usuário em formato JSON, aplica o mesmo padrão de tratamento utilizado no treinamento e retorna:
-
-Classe prevista de obesidade;
-Probabilidades associadas a cada classe.
-3. Interface Streamlit
-
-A pasta streamlit/ contém a interface web da aplicação.
-
-Essa interface coleta os dados informados pelo usuário, envia uma requisição para a API Flask e exibe o resultado da previsão de forma visual e interativa.
-
-4. Docker Compose
-
-O arquivo docker-compose.yml é responsável por orquestrar os três serviços:
-
-trainer   -> executa o treinamento do modelo
-api       -> sobe a API Flask
-streamlit -> sobe a interface web
-
-O modelo treinado é salvo em um volume Docker compartilhado, permitindo que a API acesse o arquivo gerado pelo container de treinamento.
-
-Como executar com Docker Compose
-
-Para rodar a arquitetura completa localmente, execute:
-
+```bash
 docker compose up --build
+```
 
-Após a inicialização dos containers, acesse a aplicação em:
+Após a inicialização, acesse:
 
-http://localhost:8501
+- Streamlit: http://localhost:8501
+- API Flask: http://localhost:5000
 
-A API Flask também ficará disponível em:
+### Deploy e versões
 
-http://localhost:5000
-Observação sobre o deploy
+- A versão publicada no Streamlit Cloud utiliza `app.py` da raiz do projeto.
+- A versão Docker Compose utiliza `streamlit/app.py` para a interface, consumindo a API Flask.
 
-A versão publicada no Streamlit Cloud utiliza o arquivo app.py da raiz do projeto.
-
-Já a arquitetura com Docker Compose utiliza a estrutura separada em train/, api/ e streamlit/, simulando um fluxo mais próximo de uma aplicação em produção.
+Isso permite mostrar tanto uma implantação simples em Streamlit quanto uma arquitetura mais robusta e modular para produção.

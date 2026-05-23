@@ -398,7 +398,8 @@ with tab2:
             title="Frequência de atividade física por nível de obesidade",
             labels={
                 "FAF": "Frequência de atividade física",
-                "Obesity": "Nível de obesidade"
+                "Obesity": "Nível de obesidade",
+                "Quantidade": "Quantidade"
             }
         )
 
@@ -427,7 +428,8 @@ with tab2:
             title="Consumo frequente de alimentos calóricos por nível de obesidade",
             labels={
                 "FAVC": "Consome alimentos calóricos?",
-                "Obesity": "Nível de obesidade"
+                "Obesity": "Nível de obesidade",
+                "Quantidade": "Quantidade"
             }
         )
 
@@ -456,16 +458,22 @@ with tab3:
 
     st.markdown(
         """
-        Este projeto utiliza uma base de dados sobre obesidade para construir 
-        uma solução analítica e preditiva voltada ao apoio da tomada de decisão médica.
+        Esta versão em Streamlit Cloud oferece uma experiência direta para análise e predição de obesidade.
 
-        A aplicação contempla:
+        O aplicativo permite:
 
-        - Tratamento e preparação dos dados;
-        - Feature engineering;
-        - Treinamento de modelo de Machine Learning;
-        - Sistema preditivo em Streamlit;
-        - Dashboard com principais insights analíticos;
-        - Ambiente conteinerizado com Docker.
+        - Inserir dados do paciente em português;
+        - Gerar previsão do nível de obesidade;
+        - Visualizar probabilidades por classe;
+        - Acessar insights de variáveis importantes como peso, altura, hábitos alimentares e atividade física.
+
+        O objetivo é apoiar a triagem inicial, tornando a análise mais rápida e acessível, sem substituir a avaliação clínica.
+
+        A estrutura inclui:
+
+        - pré-processamento dos dados;
+        - modelo RandomForest treinado;
+        - interface simples e interativa;
+        - dashboard com métricas e gráficos.
         """
     )

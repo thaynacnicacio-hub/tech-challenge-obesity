@@ -271,22 +271,21 @@ with tab2:
 
     st.markdown(
         """
-        Esta versão utiliza uma arquitetura mais próxima de produção:
+        Esta versão apresenta a arquitetura completa de produção com três camadas separadas:
 
-        **1. Container de treinamento**
-        
-        Responsável por carregar a base `Obesity.csv`, treinar o modelo de Machine Learning e salvar o modelo treinado.
+        **1. Treinamento**
+        - O container `train/` carrega `Obesity.csv`, faz o pré-processamento, treina o modelo e salva o artefato `obesity_model.pkl`.
 
         **2. API Flask**
-        
-        Responsável por carregar o modelo treinado e expor um endpoint `/predict` para receber os dados e retornar a previsão.
+        - O container `api/` carrega o modelo treinado e expõe o endpoint `POST /predict`.
+        - Recebe os dados do usuário em JSON, aplica as mesmas transformações usadas no treino e retorna a previsão.
 
         **3. Interface Streamlit**
-        
-        Responsável por exibir a aplicação para o usuário final e consumir a API Flask.
+        - O container `streamlit/` apresenta o formulário em português, coleta as respostas e consome a API Flask.
+        - Exibe a previsão e a probabilidade de cada classe de obesidade.
 
         **4. Docker Compose**
-        
-        Responsável por orquestrar os containers de treinamento, API e Streamlit.
+        - Orquestra os três containers e compartilha o modelo treinado via volume.
+        - Facilita o deploy local e mantém cada responsabilidade isolada.
         """
     )
