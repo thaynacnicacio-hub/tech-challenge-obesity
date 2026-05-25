@@ -109,7 +109,7 @@ obesity_translation = {
 tab1, tab2 = st.tabs(["🔍 Predição via API", "ℹ️ Sobre a Arquitetura"])
 
 with tab1:
-    st.header("Previsão do nível de obesidade")
+    st.header("Análise e classificação")
 
     st.markdown(
         """
