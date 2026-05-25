@@ -7,12 +7,12 @@ import requests
 API_URL = "http://api:5000/predict"
 
 st.set_page_config(
-    page_title="Sistema Preditivo de Obesidade",
+    page_title="🏥Predição e insights para apoio à triagem médica",
     page_icon="🏥",
     layout="wide"
 )
 
-st.title("🏥 Sistema Preditivo de Obesidade")
+st.title("🏥Predição e insights para apoio à triagem médica")
 
 st.markdown(
     """
